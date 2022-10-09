@@ -1,0 +1,19 @@
+int main(int argc(ebp+0x8), char **argv(ebp+12)) {
+
+    int buffer1;
+
+    puts("***********************************");
+    puts("* \t     -Level00 -\t\t  *");
+    puts("***********************************");
+
+    printf("Password:");
+    sscanf("%d", buffer1);
+
+    if (buffer1 != 5276)
+        return (0)
+    
+    puts("\nAuthenticated!");
+    system("/bin/sh");
+
+    return (1);
+}
