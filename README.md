@@ -47,4 +47,3 @@ If you thought [Rainfall][0] was easy, here’s a more daunting challenge. Overr
 [2]: https://beta.hackndo.com/stack-introduction/
 [3]: https://beta.hackndo.com/assembly-basics/
 [4]: https://cdn.intra.42.fr/isos/OverRide.iso
-
