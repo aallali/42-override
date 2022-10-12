@@ -18,7 +18,6 @@
     char *buffer1 = esp+28
     char *buffer2 = esp+92
 
-
     0x60 ... 96
     0x1c ... 28
     0x5c ... 92
@@ -26,9 +25,6 @@
     0x64 ... 100
 
 }
-
----
-
 ```
 * __`<0> ➜ <+8> : prepare stack frame for n function with size 160`__
 ```c
@@ -161,7 +157,7 @@ return (1)
 0x08048473 <+15>:	call   0x8048380 <puts@plt>
 puts("verifying username....\n");
 ```
-* __`<+> ➜ <+> : compare value in global variable (a_user_name) to "dat_will and put value of comparison in eax"`__
+* __`<+20> ➜ <+53> : compare value in global variable (a_user_name) to "dat_will and put value of comparison in eax"`__
 ```c
 0x08048478 <+20>:	mov    edx,0x804a040 //  <a_user_name>
 0x0804847d <+25>:	mov    eax,0x80486a8 // "dat_wil"
