@@ -39,7 +39,7 @@
 0x080484d5 <+5>:	and    esp,0xfffffff0
 0x080484d8 <+8>:	sub    esp,96
 ```
-* __`<+11> ➜ <+29> : `__
+* __`<+11> ➜ <+29> : fill the block of memory of buffer1 with 64 bytes of 0s`__
 ```c
 0x080484db <+11>:	lea    ebx,[buffer1]
 0x080484df <+15>:	mov    eax,0
@@ -49,14 +49,14 @@
 0x080484ed <+29>:	rep stos DWORD PTR es:[edi],eax
 buffer1 = memset(buffer1, 0, 64);
 ```
-* __`<+31> ➜ <+46> : `__
+* __`<+31> ➜ <+46> : simple put to screen`__
 ```c
 0x080484ef <+31>:	mov    DWORD PTR [buffer2],0
 0x080484f7 <+39>:	mov    DWORD PTR [esp],0x80486b8 // "********* ADMIN LOGIN PROMPT *********"
 0x080484fe <+46>:	call   0x8048380 <puts@plt>
 puts("********* ADMIN LOGIN PROMPT *********");
 ```
-* __`<+51> ➜ <+88> : `__
+* __`<+51> ➜ <+88> : get username value from user with fgets and save it into a_user_name`__
 ```c
 0x08048503 <+51>:	mov    eax,0x80486df // "Enter Username: "
 0x08048508 <+56>:	mov    DWORD PTR [esp],eax
@@ -69,7 +69,7 @@ puts("********* ADMIN LOGIN PROMPT *********");
 printf("Enter Username: ");
 fgets(a_user_name, 256, stdin);
 ```
-* __`<+93> ➜ <+126> : `__
+* __`<+93> ➜ <+126> : verify if username is valid with a function`__
 ```c
 0x0804852d <+93>:	call   0x8048464 <verify_user_name>
 0x08048532 <+98>:	mov    DWORD PTR [buffer2],eax
@@ -83,7 +83,7 @@ if (verify_user_name() != 0)
     puts("nope, incorrect username...\n");
     jump to return(1) 
 ```
-* __`<+128> ➜ <+>164 : `__
+* __`<+128> ➜ <+>164 : takes password from user by reading 99 bytes from user and save it into psswd buffer of size of 64 bytes (the prob is here)`__
 ```c
 0x08048550 <+128>:	mov    DWORD PTR [esp],0x804870d // "Enter Password: "
 0x08048557 <+135>:	call   0x8048380 <puts@plt>
