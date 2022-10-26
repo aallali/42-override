@@ -1,0 +1,56 @@
+int main(int argc(ebp+0x8), char **argv(ebp+12)) {
+
+    var buff1
+    var *psswd
+    var *buff3
+    var psBytes
+    File *psswdFile
+
+    memset(buff1, 0, 48);
+    memset(psswd, 0, 20);
+    memset(buff3, 0, 48);
+
+    if (fopen("/home/users/level03/.pass", "r") == 0){
+        fwrite("ERROR: failed to open password file\n", 1, 46, stderr);
+        exit(10)
+
+    }
+
+    psBytes = fread(psswd, 1, 41, psswdFile); // READ PASSWORD FILE INTO "psswd" buffer
+    *(psswd + strcspn(psswd, "\n")) = \0; // put \0 at the end of psswd string in the place of \n
+
+    if (psBytes != 41) {
+        fwrite("ERROR: failed to read password file\n", 1, 36, stderr);
+        fwrite("ERROR: failed to read password file\n", 1, 36, stderr);
+        exit(1);
+    }
+
+    fclose(psswdFile);
+
+    puts("===== [ Secure Access System v1.0 ] =====");
+    puts("/***************************************\\");
+    puts("| You must login to access this system. |");
+    puts("\\**************************************/");
+    printf("--[ Username:");
+
+    fgets(buff1, 100, stdin); // USER INPUT 1
+
+    *(buff1 + strcspn(buff1, "\n")) = 0
+
+    printf("--[ Password: ");
+    fgets(buff3, 100, stdin); // USER INPUT 2
+
+    *(buff3 + strcspn(buff3, , "\n")) = 0
+    puts("*****************************************");
+
+    if (strncmp(psswd, buff3, 41)) {
+        printf("Greetings, %s!\n", buff1);
+        system("/bin/sh");
+        return(0);
+    }
+
+    printf(buff1);
+    puts(" does not have access!");
+    exit(1);
+
+}
