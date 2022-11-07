@@ -41,7 +41,12 @@ If you thought [Rainfall][0] was easy, here’s a more daunting challenge. Overr
     x/10wx $esp
     end
     ```
-
+- .gdbinit
+    ```
+    set disassembly-flavor intel
+    set height 0
+    info fun
+    ```
 [0]: https://github.com/aallali/42-rainfall
 [1]: https://wiremask.eu/tools/buffer-overflow-pattern-generator/
 [2]: https://beta.hackndo.com/stack-introduction/
