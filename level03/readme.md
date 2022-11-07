@@ -235,7 +235,6 @@ return
     i = (ebp-40) = 0
     hash = (ebp-29) = "Q}|u`sfg~sf{}|a"
     hashLength = (ebp-36) = 15
-    buff1 = (ebp-44)
 ```
 - **`<+0> ➜ <+5> : prepare stack frame for decrypt function with size 64`**
 ```c
@@ -272,10 +271,10 @@ hash = "Q}|u`sfg~sf{}|a"
 - **`<+60> ➜ <+91> : calculate the length of hash (~15) and save it into hashLength variabl`** 
 ```c
 0x0804869c <+60>:	lea    eax,[hash]
-0x0804869f <+63>:	mov    DWORD PTR [ebp-44],0xffffffff
+0x0804869f <+63>:	mov    DWORD PTR [ebp-44],0xffffffff // -1
 0x080486a6 <+70>:	mov    edx,eax
 0x080486a8 <+72>:	mov    eax,0
-0x080486ad <+77>:	mov    ecx,DWORD PTR [ebp-44]
+0x080486ad <+77>:	mov    ecx,DWORD PTR [ebp-44] // ecx = -1
 0x080486b0 <+80>:	mov    edi,edx
 0x080486b2 <+82>:	repnz scas al,BYTE PTR es:[edi]
 0x080486b4 <+84>:	mov    eax,ecx
@@ -312,7 +311,8 @@ do {
 - **`<+> ➜ <+> : ...`** 
 ```c
 0x080486ed <+141>:	lea    eax,[hash]
-0x080486f0 <+144>:	mov    edx,eax
+
+0x080486f0 <+144>:	mov    edx,eax // edx = &hash
 0x080486f2 <+146>:	mov    eax,0x80489c3 // "Congratulations!"
 0x080486f7 <+151>:	mov    ecx,17
 0x080486fc <+156>:	mov    esi,edx
@@ -324,21 +324,37 @@ do {
 0x0804870a <+170>:	sub    cl,al
 0x0804870c <+172>:	mov    eax,ecx
 0x0804870e <+174>:	movsx  eax,al
+eax = strncmp(hash, "Congratulations!", 17);
+
 0x08048711 <+177>:	test   eax,eax
 0x08048713 <+179>:	jne    0x8048723 <decrypt+195>
-0x08048715 <+181>:	mov    DWORD PTR [esp],0x80489d4
+
+0x08048715 <+181>:	mov    DWORD PTR [esp],0x80489d4 // "/bin/sh"
 0x0804871c <+188>:	call   0x80484e0 <system@plt>
+system("/bin/sh");
 0x08048721 <+193>:	jmp    0x804872f <decrypt+207>
-0x08048723 <+195>:	mov    DWORD PTR [esp],0x80489dc
+
+0x08048723 <+195>:	mov    DWORD PTR [esp],0x80489dc // "\nInvalid Password"
 0x0804872a <+202>:	call   0x80484d0 <puts@plt>
-0x0804872f <+207>:	mov    esi,DWORD PTR [ebp-0xc]
-0x08048732 <+210>:	xor    esi,DWORD PTR gs:0x14
+puts("\nInvalid Password");
+if (eax != 0) {
+    puts("\nInvalid Password");
+} else {
+    system("/bin/sh");
+    // canary check
+}
+```
+- **`<+207> ➜ <+219> : canary check`** 
+```c
+0x0804872f <+207>:	mov    esi,DWORD PTR [ebp-12]
+0x08048732 <+210>:	xor    esi,DWORD PTR gs:20
 0x08048739 <+217>:	je     0x8048740 <decrypt+224>
 0x0804873b <+219>:	call   0x80484c0 <__stack_chk_fail@plt>
+
 ```
-- **`<+224> ➜ <+230> : ...`** 
+- **`<+224> ➜ <+230> : quit the function`** 
 ```c
-0x08048740 <+224>:	add    esp,0x40
+0x08048740 <+224>:	add    esp,64
 0x08048743 <+227>:	pop    esi
 0x08048744 <+228>:	pop    edi
 0x08048745 <+229>:	pop    ebp
@@ -351,17 +367,40 @@ do {
 #include <stdio.h>
 #include <stdlib.h>
 #include <time.h>
-void decrypt(nb) {
 
+void decrypt(nb) {
+    i = 0
+    hash = "Q}|u`sfg~sf{}|a"
+    hashLength = 15
+    buff1 = 
+
+    hashLength = strlen(hash)
+
+    do {
+        hash[i] = hash[i] ^ arg1;
+        i++
+    } while (i < hashLength)
+
+    if (strncmp(hash, "Congratulations!", 17) != 0) {
+        puts("\nInvalid Password");
+    } else {
+        system("/bin/sh");
+        // canary check
+    }
+
+    return;
 }
+
 void test(arg1, arg2) {
     int diffBuffer = arg2 - arg1;
+
     if (diffBuffer > 21)
         decrypt(rand());
     else
         decrypt(diffBuffer);
     return
 }
+
 int main(int argc(ebp+0x8), char **argv(ebp+12)) {
 
     int buff = esp+28
@@ -414,19 +453,34 @@ return (0)
 ```
 
 ### Process of the Exploit
-
+- the program contains 3 functions (main, test, decrypt)
+    - **main()**:
+        - seeds the random number generator used by the function rand
+        - takes number from user input and save it into _**buff**_ variable
+        - call _**test**_ function with 2 args, `buff` && `322424845`
+    - **test(int, int)**:
+        - takes 2 intiger arguments
+        - calculate the diff between these 2 numbers
+        - if the diff strictly superior than 21 (>21) call _**decrypt**_ function with `random number`, if less call  _**decrypt**_ with the `diff value`
+        
+    - **decrypt(int)**:   
+        - has a variable `hash` containing the following string __Q}|u`sfg~sf{}|a__
+        - apply a XOR operation of each character with the argument sent (int)
+        - compare the new hash content after the xor of its characters with the value `Congratulations`
+        - if matching execute shell if not quit the program
+- we have limited tries of the solutions since the programm only deals with numbers and only call decrypt with logical value when the diff is less than or equal 21
+- the solutions possible are the numbers between `322424824` and `322424844`
+- if we try all of them numbers, we will get invalide password in all execpt the number that will make the diff equal to 18 which is _**322424827**_
 ---
 
 ### Solution :
 
 
-|**`flag : Hh74RPnuQ9sa5JAEXgNWCqz7sXGnh5J5M9KfPg3H`**
+|**`flag : `**
 ---
 
 ### Ressources :
 
 **_[doc1](link)_**
 **_[doc2](link)_**
-**_[doc3](link)_**
-...
-**_[docX](link)_**
+ 
