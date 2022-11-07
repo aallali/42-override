@@ -15,9 +15,9 @@ If you thought [Rainfall][0] was easy, here’s a more daunting challenge. Overr
 | N°     | Name                   | Flag                        |
 |:------:|------------------------|-----------------------------|
 | Flag0  | just comparing numbers | level00 |
-| Flag1  | ---- | uSq2ehEGT6c9S24zbshexZQBXUGrncxn5sD5QfGL |
-| Flag2  | ---- | ----|
-| Flag3  | ---- | ----|
+| Flag1  | shellcode | uSq2ehEGT6c9S24zbshexZQBXUGrncxn5sD5QfGL |
+| Flag2  | GOT | PwBLgNa8p8MTKW57S7zxVAQCxnCpV8JqTTs9XEBv |
+| Flag3  | ---- | Hh74RPnuQ9sa5JAEXgNWCqz7sXGnh5J5M9KfPg3H |
 | Flag4  | ---- | ----|
 | Flag5  | ---- | ----|
 | Flag6  | ---- | ----|
