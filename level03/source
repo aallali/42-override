@@ -1,0 +1,53 @@
+#include <stdio.h>
+#include <stdlib.h>
+#include <time.h>
+
+void decrypt(nb) {
+    i = 0
+    hash = "Q}|u`sfg~sf{}|a"
+    hashLength = 15
+    buff1 = 
+
+    hashLength = strlen(hash)
+
+    do {
+        hash[i] = hash[i] ^ arg1;
+        i++
+    } while (i < hashLength)
+
+    if (strncmp(hash, "Congratulations!", 17) != 0) {
+        puts("\nInvalid Password");
+    } else {
+        system("/bin/sh");
+        // canary check
+    }
+
+    return;
+}
+
+void test(arg1, arg2) {
+    int diffBuffer = arg2 - arg1;
+
+    if (diffBuffer > 21)
+        decrypt(rand());
+    else
+        decrypt(diffBuffer);
+    return
+}
+
+int main(int argc(ebp+0x8), char **argv(ebp+12)) {
+
+    int buff = esp+28
+
+    srand((unsigned) time(0));
+
+    puts("***********************************");
+    puts("*\t\tlevel03\t\t**");
+    puts("***********************************");
+
+    printf("Password:");
+    scanf("%d", buff);
+
+    test(*buff, 322424845);
+    return (0)
+}
