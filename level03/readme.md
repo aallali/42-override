@@ -421,36 +421,10 @@ return (0)
 
 ### Stack Illustration
 
-```c
-+-------------------+
-[      **argv       ]
-+-------------------+ +12
-[        argc       ]
-+-------------------+ +8
-[ret addr (OLD_EIP) ]
-+-------------------+ +4
-[      OLD_EBP      ]
-+-------------------+ <--- RBP
-[                   ]
-+-------------------+ RBP-4
-[                   ]
-+-------------------+ RBP-8 -- ile psswdFile
-[      file*        ] <---fread(buff2, 1, 41, psswdFile)
-+-------------------+ rbp - 12
-[                   ]
-[                   ]
-+-------------------+ RBP-112 -- username (48)<----+
-[                   ]                              | (48 bytes)
-[                   ]                              | 
-+-------------------+ RBP-160 -- buff2 (20)   <----+
-[                   ]                              | (111 bytes)
-[                   ]                              |
-+-------------------+ RBP-272 -- password (20) <---+
-[       edi         ]
-+-------------------+ RBP-276
-[       rsi         ]
-+-------------------+ RBP-288 (RSP)
+```txt
+UNAVAILABLE (no need for this level)
 ```
+
 
 ### Process of the Exploit
 - the program contains 3 functions (main, test, decrypt)
@@ -474,13 +448,22 @@ return (0)
 ---
 
 ### Solution :
+```shell
+level03@OverRide:~$ ./level03
+***********************************
+*		level03		**
+***********************************
+Password:322424827
+$ pwd
+/home/users/level03
+$ cat /home/users/level04/.pass
+kgv3tkEb9h2mLkRsPkXRfc2mHbjMxQzvb2FrgKkf
+$
+```
 
-
-|**`flag : `**
+|**`flag : kgv3tkEb9h2mLkRsPkXRfc2mHbjMxQzvb2FrgKkf`**
 ---
 
 ### Ressources :
-
-**_[doc1](link)_**
-**_[doc2](link)_**
+N/A
  
