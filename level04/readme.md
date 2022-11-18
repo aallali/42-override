@@ -57,11 +57,9 @@ memset(buff1, 32, 0);
 ptrace_ret = 0
 status = 0
 ```
-- **`START OF A WHILE LOOP`**
+
 - **`<+65> ➜ <+>155 : verify of fork_pid == 0 , which means its the child process then execute prctl() and ptrace() and gets(buff1) to fill buff1 buffer then quit program with 0`**
-- **`<+161> ➜ <+168> : wait 1 second`**
-- **`<+173> ➜ <+226> : make a condition check on status variable to exit if true`**
-- **`<+242> ➜ <+296> : compare ptrace(3, fork_pid, 44, 0) to 11 if not equal repeat while , else go kill child process`**
+
 ```c
 0x08048709 <+65>:	cmp    DWORD PTR [fork_pid], 0
 0x08048711 <+73>:	jne    0x8048769 <main+161>
@@ -83,10 +81,6 @@ status = 0
 0x0804875b <+147>:	mov    DWORD PTR [esp],eax
 0x0804875e <+150>:	call   0x80484b0 <gets@plt>
 0x08048763 <+155>:	jmp    0x804881a <main+338>
-// start of a while 
-// do {} while()
-0x08048768 <+160>:	nop
-
 if (fork_pid == 0) { // child
 	prctl(1, 1);
 	ptrace(0, 0, 0, 0);
@@ -94,6 +88,16 @@ if (fork_pid == 0) { // child
 	gets(buff1);
 	return(0); // jump to <main + 338>
 }
+
+```
+- **`START OF A WHILE LOOP`**
+- **`<+161> ➜ <+168> : wait 1 second`**
+- **`<+173> ➜ <+226> : make a condition check on status variable to exit if true`**
+- **`<+242> ➜ <+296> : compare ptrace(3, fork_pid, 44, 0) to 11 if not equal repeat while , else go kill child process`**
+```c
+// start of a while 
+// do {} while()
+0x08048768 <+160>:	nop
 
 0x08048769 <+161>:	lea    eax,[status]
 0x0804876d <+165>:	mov    DWORD PTR [esp],eax
@@ -185,21 +189,16 @@ int main(int argc(ebp + 8), char **argv(ebp+12)) {
 	if (fork_pid == 0){
 		prctl(1, 1);
 		ptrace(0, 0, 0, 0);
+		puts("Give me some shellcode, k");
+		gets(buff1);
 		return (0)
 	} 
 
-
 	do {
-		if (fork_pid == 0) {
-			prctl(1, 2);
-			ptrace(0, 0, 0, 0);
-			puts("Give me some shellcode, k");
-			gets(buff1);
-			return(0); // jump to <main + 338>
-		}
+
 		wait(status);
-	
-		if ((status & 127 == 0) || (status & 127) + 1 / 2 > 0) {
+
+		if ((status & 127 == 0) || (status & 127) + 1 >> 1 > 0) {
 			puts("child is exiting...");
 			return (0);
 		}
