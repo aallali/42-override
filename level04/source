@@ -1,0 +1,41 @@
+int main(int argc(ebp + 8), char **argv(ebp+12)) {
+
+	pid_t fork_pid
+	char* buff1[128]
+	int ptrace_ret
+	int status     
+
+	fork_pid = fork();
+	memset(buff1, 32, 0);
+	ptrace_ret = 0
+	status = 0
+
+	if (fork_pid == 0){
+		prctl(1, 1);
+		ptrace(0, 0, 0, 0);
+		return (0)
+	} 
+
+
+	do {
+		if (fork_pid == 0) {
+			prctl(1, 2);
+			ptrace(0, 0, 0, 0);
+			puts("Give me some shellcode, k");
+			gets(buff1);
+			return(0); // jump to <main + 338>
+		}
+		wait(status);
+	
+		if ((status & 127 == 0) || (status & 127) + 1 / 2 > 0) {
+			puts("child is exiting...");
+			return (0);
+		}
+
+	} while (ptrace(3, fork_pid, 44, 0) != 11)
+
+	puts("no exec() for you");
+	kill(fork_pid, 9);
+
+	return(0);
+}
