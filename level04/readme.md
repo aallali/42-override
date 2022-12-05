@@ -288,9 +288,9 @@ int main(int argc(ebp + 8), char **argv(ebp+12)) {
 ---
 
 ### Ressources :
-**_["fork" function in c](https://man7.org/linux/man-pages/man2/fork.2.html)_**
-**_["prctl" function in c](https://man7.org/linux/man-pages/man2/prctl.2.html)_**
-**_["ptrace" function in c](https://man7.org/linux/man-pages/man2/ptrace.2.html)_**
-**_["ptrace" function in c](https://man7.org/linux/man-pages/man2/ptrace.2.html)_**
-**_["sar" instruction in assembley](http://www.c-jump.com/CIS77/ASM/Flags/F77_0160_sar_instruction.htm)_**
+- **_["fork" function in c](https://man7.org/linux/man-pages/man2/fork.2.html)_**
+- **_["prctl" function in c](https://man7.org/linux/man-pages/man2/prctl.2.html)_**
+- **_["ptrace" function in c](https://man7.org/linux/man-pages/man2/ptrace.2.html)_**
+- **_["ptrace" function in c](https://man7.org/linux/man-pages/man2/ptrace.2.html)_**
+- **_["sar" instruction in assembley](http://www.c-jump.com/CIS77/ASM/Flags/F77_0160_sar_instruction.htm)_**
 
