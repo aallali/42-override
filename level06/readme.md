@@ -212,14 +212,14 @@ hashAlgo
 	0x0804883f <+247>:   sub    eax,edx
 	0x08048841 <+249>:   shr    eax,1
 	0x08048843 <+251>:   add    eax,edx
-	0x08048845 <+253>:   shr    eax,0xa
-	0x08048848 <+256>:   imul   eax,eax,0x539
+	0x08048845 <+253>:   shr    eax,10
+	0x08048848 <+256>:   imul   eax,eax,0x539 // 1337
 	0x0804884e <+262>:   mov    edx,ecx
 	0x08048850 <+264>:   sub    edx,eax
 	0x08048852 <+266>:   mov    eax,edx
 	0x08048854 <+268>:   add    DWORD PTR [key],eax
-key += hashAlgo(login[i])
-	0x08048857 <+271>:   add    DWORD PTR [i],0x1
+key += hashAlgo(login[i]) // (((int)login[i] ^ key) % 1337);
+	0x08048857 <+271>:   add    DWORD PTR [i], 1
 i++
 0x0804885b <+275>:   mov    eax,DWORD PTR [i]
 0x0804885e <+278>:   cmp    eax,DWORD PTR [loginLength]
@@ -242,8 +242,55 @@ return(0);
 
 ### Code Prediction
 ```c
+int auth(login, serial) {
+	int loginLength = ebp-12 = 0
+	int key = ebp-16 = .
+	strcspn(login, "\n");
+	loginLength = strnlen(login, 32);
+	if (loginLength > 0) {
+	}
+	if (ptrace(0, 0, 1, 0) == -1) {
+		puts("\033[32m.", '----------------------------', ".");
+		puts("\033[31m| !! TAMPERING DETECTED !!  |");
+		puts("\033[32m'", '----------------------------', "'");
+		return(1);
+	}
+	key = (login[2] ^ 4919) + 6221293
+	i = 0
+	do {
+		if (login[i] <= 31) {
+			return (1)
+		}
+		key += hashAlgo(login[i])
+		i++
+	} while(i < loginLength)
+	if (key === serial)
+		return 1
+	return 0;
+}
 int main(int argc(ebp + 8), char **argv(ebp+12)) {
+	char *loginBuffer = esp+44
+	int serialBuffer = esp+40
 
+	puts("**************************");
+	puts("*        level06         *");
+	puts("**************************");
+	printf("-> Enter Login: ");
+
+	fgets(loginBuffer, 32, stdin);
+
+	puts("**************************************");
+	puts("******* NEW ACCOUNT DETECTED ********");
+	puts("**************************************");
+	printf("-> Enter Serial: ");
+
+	scanf("%u", serialBuffer);
+	if (auth(loginBuffer, serialBuffer) == 0) {
+		puts("Authenticated!");
+		system("/bin/sh");
+	} else 
+		return 1;
+	return 0
 }
 ```
 
@@ -251,18 +298,82 @@ int main(int argc(ebp + 8), char **argv(ebp+12)) {
 N/A
 
 ### Process of the Exploit
-- ....
-
+- program takes 2 user inputs (login, serial number)
+- send these 2 inputs to `auth` function
+- call a ptrace inside auth function
+	- `The ptrace() system call provides a means by which one process (the "tracer") may observe and control the execution of another process (the "tracee"), and examine and change the tracee's memory  breakpoint debugging and system call tracing.`
+- apply a hashing algo on the login and compare it to the serial number entered
+- if serial entered by user equal to hashed login then return 1 and excute shell otherwise quit without do anything.
+##### debug process
+- break right after the call of ptrace to overwrite the return value to 0 so we can keep debugging
+	```
+	(gdb)> disass auth
+	...
+	0x080487b5 <+109>:   call   0x80485f0 <ptrace@plt>
+	0x080487ba <+114>:   cmp    eax,0xffffffff <===== break 1
+	...
+	0x08048863 <+283>:   mov    eax,DWORD PTR [ebp+0xc]
+	0x08048866 <+286>:   cmp    eax,DWORD PTR [ebp-0x10] 
+	0x08048869 <+289>:   je     0x8048872 <auth+298> <===== break 2
+	...
+	(gdb)> b * 0x080487ba
+	(gdb)> b * 0x08048869
+	```
+- then run the program -> enter login + serial
+	```
+	(gdb) run
+	The program being debugged has been started already.
+	Start it from the beginning? (y or n) y
+	Starting program: /home/users/level06/level06 
+	***********************************
+	*               level06           *
+	***********************************
+	-> Enter Login: allali
+	***********************************
+	***** NEW ACCOUNT DETECTED ********
+	***********************************
+	-> Enter Serial: 1234567890
+	Breakpoint 1, 0x080487ba in auth ()
+	(gdb)
+	```
+- then first breakpoint is hit, change the return of `ptrace` in `eax` so the program doesnt stop 
+	```
+	(gdb) set $eax=0
+	(gdb) c
+	```
+- when second breakpoint is hit, print the result of serial key generated :
+	```
+	(gdb) x/wx $ebp-0x10
+	0xffffd698:     0x005f1b01
+	(gdb) p 0x005f1b01
+	$1 = 6232833 <----
+	(gdb)
+	```
+- here we go, we got the correct serial for the login `allali`
 ---
 
 ### Solution :
-- ################
+- enter the login with its equivalent serial to access the shell.
 
 ```shell
-$ #################
+level06@OverRide:~$ ./level06 
+***********************************
+*               level06           *
+***********************************
+-> Enter Login: allali
+***********************************
+***** NEW ACCOUNT DETECTED ********
+***********************************
+-> Enter Serial: 6232833
+Authenticated!
+$ pwd
+/home/users/level06
+$ cat /home/users/level07/.pass
+GbcPDRgsFK77LNnnuh7QyFYA2942Gp8yKj9KrWD8
+$ 
 
 ```
-|**`flag : `**
+|**`flag : GbcPDRgsFK77LNnnuh7QyFYA2942Gp8yKj9KrWD8`**
 ---
 
 ### Ressources :
