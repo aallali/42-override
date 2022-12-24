@@ -1,4 +1,3 @@
-
 ### 0x08048723 : main() : assembly
 ```c
 0x08048723 <+0>:     push   ebp
@@ -16,11 +15,7 @@
 0x08048746 <+35>:    mov    DWORD PTR [esp+0x1cc],eax
 0x0804874d <+42>:    xor    eax,eax
 0x0804874f <+44>:    mov    DWORD PTR [esp+0x1b4],0x0
-int ret = 0; /* esp+0x1b4 */
-
 0x0804875a <+55>:    mov    DWORD PTR [esp+0x1b8],0x0
-char buffer[20]; /* esp+0x1b8 */
-
 0x08048765 <+66>:    mov    DWORD PTR [esp+0x1bc],0x0
 0x08048770 <+77>:    mov    DWORD PTR [esp+0x1c0],0x0
 0x0804877b <+88>:    mov    DWORD PTR [esp+0x1c4],0x0
@@ -31,74 +26,57 @@ char buffer[20]; /* esp+0x1b8 */
 0x0804879f <+124>:   mov    edi,ebx
 0x080487a1 <+126>:   mov    ecx,edx
 0x080487a3 <+128>:   rep stos DWORD PTR es:[edi],eax
-int tab[100] = 0; /* esp+0x24 */
-
-    0x080487a5 <+130>:   jmp    0x80487ea <main+199>
-
-    0x080487a7 <+132>:   mov    eax,DWORD PTR [esp+0x1c]
-    0x080487ab <+136>:   mov    eax,DWORD PTR [eax]
-    0x080487ad <+138>:   mov    DWORD PTR [esp+0x14],0xffffffff
-    0x080487b5 <+146>:   mov    edx,eax
-    0x080487b7 <+148>:   mov    eax,0x0
-    0x080487bc <+153>:   mov    ecx,DWORD PTR [esp+0x14]
-    0x080487c0 <+157>:   mov    edi,edx
-    0x080487c2 <+159>:   repnz scas al,BYTE PTR es:[edi]
-    0x080487c4 <+161>:   mov    eax,ecx
-    0x080487c6 <+163>:   not    eax
-    0x080487c8 <+165>:   lea    edx,[eax-0x1]
-    0x080487cb <+168>:   mov    eax,DWORD PTR [esp+0x1c]
-    0x080487cf <+172>:   mov    eax,DWORD PTR [eax]
-    0x080487d1 <+174>:   mov    DWORD PTR [esp+0x8],edx
-    0x080487d5 <+178>:   mov    DWORD PTR [esp+0x4],0x0
-    0x080487dd <+186>:   mov    DWORD PTR [esp],eax
-    0x080487e0 <+189>:   call   0x80484f0 <memset@plt>
-    0x080487e5 <+194>:   add    DWORD PTR [esp+0x1c],0x4
-
-    0x080487ea <+199>:   mov    eax,DWORD PTR [esp+0x1c]
-    0x080487ee <+203>:   mov    eax,DWORD PTR [eax]
-    0x080487f0 <+205>:   test   eax,eax
-    0x080487f2 <+207>:   jne    0x80487a7 <main+132>
-for (int i = 0; argv[i] != 0; i++) {
-    memset(argv[i], 0, strlen(argv[i]) - 1);
-}   
-    0x080487f4 <+209>:   jmp    0x8048839 <main+278>
-
-    0x080487f6 <+211>:   mov    eax,DWORD PTR [esp+0x18]
-    0x080487fa <+215>:   mov    eax,DWORD PTR [eax]
-    0x080487fc <+217>:   mov    DWORD PTR [esp+0x14],0xffffffff
-    0x08048804 <+225>:   mov    edx,eax
-    0x08048806 <+227>:   mov    eax,0x0
-    0x0804880b <+232>:   mov    ecx,DWORD PTR [esp+0x14]
-    0x0804880f <+236>:   mov    edi,edx
-    0x08048811 <+238>:   repnz scas al,BYTE PTR es:[edi]
-    0x08048813 <+240>:   mov    eax,ecx
-    0x08048815 <+242>:   not    eax
-    0x08048817 <+244>:   lea    edx,[eax-0x1]
-    0x0804881a <+247>:   mov    eax,DWORD PTR [esp+0x18]
-    0x0804881e <+251>:   mov    eax,DWORD PTR [eax]
-    0x08048820 <+253>:   mov    DWORD PTR [esp+0x8],edx
-    0x08048824 <+257>:   mov    DWORD PTR [esp+0x4],0x0
-    0x0804882c <+265>:   mov    DWORD PTR [esp],eax
-    0x0804882f <+268>:   call   0x80484f0 <memset@plt>
-    0x08048834 <+273>:   add    DWORD PTR [esp+0x18],0x4
-
-    0x08048839 <+278>:   mov    eax,DWORD PTR [esp+0x18]
-    0x0804883d <+282>:   mov    eax,DWORD PTR [eax]
-    0x0804883f <+284>:   test   eax,eax
-    0x08048841 <+286>:   jne    0x80487f6 <main+211>
-for (int i = 0; env[i] != 0, i++) {
-    memset(env[i], 0, strlen(env[i] - 1));
-}
-    0x08048843 <+288>:   mov    DWORD PTR [esp],0x8048b38
-    0x0804884a <+295>:   call   0x80484c0 <puts@plt>
-puts("----------------------------------------------------\n"\
-    "\n  Welcome to wil's crappy number storage service!   \n"\
-    "----------------------------------------------------"\
-    "\n Commands:                                     ");
-    0x0804884f <+300>:   mov    eax,0x8048d4b
-    0x08048854 <+305>:   mov    DWORD PTR [esp],eax
-    0x08048857 <+308>:   call   0x8048470 <printf@plt>
-printf("Input command: ");
+0x080487a5 <+130>:   jmp    0x80487ea <main+199>
+0x080487a7 <+132>:   mov    eax,DWORD PTR [esp+0x1c]
+0x080487ab <+136>:   mov    eax,DWORD PTR [eax]
+0x080487ad <+138>:   mov    DWORD PTR [esp+0x14],0xffffffff
+0x080487b5 <+146>:   mov    edx,eax
+0x080487b7 <+148>:   mov    eax,0x0
+0x080487bc <+153>:   mov    ecx,DWORD PTR [esp+0x14]
+0x080487c0 <+157>:   mov    edi,edx
+0x080487c2 <+159>:   repnz scas al,BYTE PTR es:[edi]
+0x080487c4 <+161>:   mov    eax,ecx
+0x080487c6 <+163>:   not    eax
+0x080487c8 <+165>:   lea    edx,[eax-0x1]
+0x080487cb <+168>:   mov    eax,DWORD PTR [esp+0x1c]
+0x080487cf <+172>:   mov    eax,DWORD PTR [eax]
+0x080487d1 <+174>:   mov    DWORD PTR [esp+0x8],edx
+0x080487d5 <+178>:   mov    DWORD PTR [esp+0x4],0x0
+0x080487dd <+186>:   mov    DWORD PTR [esp],eax
+0x080487e0 <+189>:   call   0x80484f0 <memset@plt>
+0x080487e5 <+194>:   add    DWORD PTR [esp+0x1c],0x4
+0x080487ea <+199>:   mov    eax,DWORD PTR [esp+0x1c]
+0x080487ee <+203>:   mov    eax,DWORD PTR [eax]
+0x080487f0 <+205>:   test   eax,eax
+0x080487f2 <+207>:   jne    0x80487a7 <main+132>
+0x080487f4 <+209>:   jmp    0x8048839 <main+278>
+0x080487f6 <+211>:   mov    eax,DWORD PTR [esp+0x18]
+0x080487fa <+215>:   mov    eax,DWORD PTR [eax]
+0x080487fc <+217>:   mov    DWORD PTR [esp+0x14],0xffffffff
+0x08048804 <+225>:   mov    edx,eax
+0x08048806 <+227>:   mov    eax,0x0
+0x0804880b <+232>:   mov    ecx,DWORD PTR [esp+0x14]
+0x0804880f <+236>:   mov    edi,edx
+0x08048811 <+238>:   repnz scas al,BYTE PTR es:[edi]
+0x08048813 <+240>:   mov    eax,ecx
+0x08048815 <+242>:   not    eax
+0x08048817 <+244>:   lea    edx,[eax-0x1]
+0x0804881a <+247>:   mov    eax,DWORD PTR [esp+0x18]
+0x0804881e <+251>:   mov    eax,DWORD PTR [eax]
+0x08048820 <+253>:   mov    DWORD PTR [esp+0x8],edx
+0x08048824 <+257>:   mov    DWORD PTR [esp+0x4],0x0
+0x0804882c <+265>:   mov    DWORD PTR [esp],eax
+0x0804882f <+268>:   call   0x80484f0 <memset@plt>
+0x08048834 <+273>:   add    DWORD PTR [esp+0x18],0x4
+0x08048839 <+278>:   mov    eax,DWORD PTR [esp+0x18]
+0x0804883d <+282>:   mov    eax,DWORD PTR [eax]
+0x0804883f <+284>:   test   eax,eax
+0x08048841 <+286>:   jne    0x80487f6 <main+211>
+0x08048843 <+288>:   mov    DWORD PTR [esp],0x8048b38
+0x0804884a <+295>:   call   0x80484c0 <puts@plt>
+0x0804884f <+300>:   mov    eax,0x8048d4b
+0x08048854 <+305>:   mov    DWORD PTR [esp],eax
+0x08048857 <+308>:   call   0x8048470 <printf@plt>
 0x0804885c <+313>:   mov    DWORD PTR [esp+0x1b4],0x1
 0x08048867 <+324>:   mov    eax,ds:0x804a040
 0x0804886c <+329>:   mov    DWORD PTR [esp+0x8],eax
