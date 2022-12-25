@@ -20,9 +20,9 @@ If you thought [Rainfall][0] was easy, here’s a more daunting challenge. Overr
 | Flag3  | debug logic | Hh74RPnuQ9sa5JAEXgNWCqz7sXGnh5J5M9KfPg3H |
 | Flag4  | buffer overflow | kgv3tkEb9h2mLkRsPkXRfc2mHbjMxQzvb2FrgKkf |
 | Flag5  | got + shell env | 3v8QLcN5SAhPaZZfEasfmXdwyR59ktDEMAwHF3aN |
-| Flag6  | ---- | h4GtNnaMs2kZFN92ymTr2DcJHAzMfzLW25Ep59mq |
-| Flag7  | ---- | ----|
-| Flag8  | ---- | ----|
+| Flag6  | decode serial hashing algo | h4GtNnaMs2kZFN92ymTr2DcJHAzMfzLW25Ep59mq |
+| Flag7  | intiger overflow | GbcPDRgsFK77LNnnuh7QyFYA2942Gp8yKj9KrWD8|
+| Flag8  | symbol link | 7WJ6jFBzrcjEYXudxnM3kdW7n3qyxR6tk2xGrkSC|
 | Flag9  | ---- | ----|
 
 
