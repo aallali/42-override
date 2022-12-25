@@ -337,7 +337,7 @@ tab[index] = input;
 return (0);
 ```
 
-### 0x08048630 : get_unum() : assembly
+### 0x080485e7 : get_unum() : assembly
 ```c
     0x080485e7 <+0>:	push   ebp
     0x080485e8 <+1>:	mov    ebp,esp
