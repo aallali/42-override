@@ -1,53 +1,58 @@
 
-char* message[140]
-char* username[40]
-int len_message
+struct mail {
+    char* message[140]
+    char* username[40]
+    int len_message
+
+}
 
 void secret_backdoor(){
     char buffer[128]; /* rbp-0x80 */
-    fgets(buffer, 128, stdin);
+    fgets(buffer, 128, stdin); // <==================================== TAKES INTPUT HERE 3
     system(buffer);
 
     return;
 }
-void set_message() {
+void set_msg(*mail) {
 
     char buffer[1024]; /* rbp-1024 */
 
     bzero(buffer, 1024); // 128 * 8 = 1024
 
-    puts(">: Msg @Unix-Dude");
-    printf("Enter your username");
+	puts(">: Msg @Unix-Dude");
+	printf(">>: ");
 
-    fgets(buffer, 1024, stdin);
+    fgets(buffer, 1024, stdin); // <==================================== TAKES INTPUT HERE 2
 
-    strncpy(message, buffer, len_message);
+    strncpy(mail->message, buffer, mail->len_message);
     return
 }
-void set_username(*message) {
+void set_username(*mail) {
     char buffer[128]; /* rbp-0x90 */
 
     bzero(buffer, 128); // 16 * 8  = 128 
 
-    puts(">: Msg @Unix-Dude");
     printf("Enter your username");
-
-    fgets(buffer, 128, stdin);
+    printf( ">>: ");
+    
+    fgets(buffer, 128, stdin); // <==================================== TAKES INTPUT HERE 1
 
     int i = 0; // rbp-4
-    while(i <= 40 && buffer[i] != \0) {
-        username[i] = buffer[i];
+    while(i <= 40 && buffer[i] != \0) { // <== LOOP 41 time here !!
+        mail->username[i] = buffer[i];
         i++;
     } 
 
-    printf(">: Welcome, %s", username);
+    printf(">: Welcome, %s", mail->username);
     return;
 }
 void handle_msg() {
-    message[140] = 0; /* rbp-192 */
+    struct mail
+    mail->message[140] = 0; /* rbp-192 */
 
-    set_username(&message);
-    set_msg(&message);
+    mail->len_message = 140;
+    set_username(&mail);
+    set_msg(&mail);
 
     puts(">: Msg sent!");
     return;
