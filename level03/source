@@ -11,7 +11,7 @@ void decrypt(nb) {
     hashLength = strlen(hash)
 
     do {
-        hash[i] = hash[i] ^ arg1;
+        hash[i] = hash[i] ^ nb;
         i++
     } while (i < hashLength)
 
