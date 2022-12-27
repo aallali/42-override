@@ -338,8 +338,8 @@ Program received signal SIGSEGV, Segmentation fault.
 ```
 - **Prepare the payload**:
 >username : dat_will
->password : SHELLCODE(21 bytes) + PADDING (59 bytes) + NEW_EIP (4 bytes)
-
+>password : SHELLCODE(21 bytes) + PADDING (59 bytes) + NEW_EIP [address of buffer where shellcode stored] (4 bytes)
+- use ltrace to get the address of buffer where shellcode is saved
 ---
 ### Solution :
 
