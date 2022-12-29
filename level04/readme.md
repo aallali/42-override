@@ -243,6 +243,7 @@ int main(int argc(ebp + 8), char **argv(ebp+12)) {
 - the code fork a chill process
 - there is a `gets(buffer)` in the child process
 - we can exploit a buffer overflow with that gets
+- gdb cant follow what happend in child process by default, you need this command to tell gdb to show the error in child process : `set follow-fork-mode child`
 ---
 
 ### Solution :
